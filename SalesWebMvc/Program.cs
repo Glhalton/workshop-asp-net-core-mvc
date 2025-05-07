@@ -21,13 +21,25 @@ builder.Services.AddDbContext<SalesWebMvcContext>(options =>
 // Add services to the container
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<SeedingService>();
+
 var app = builder.Build();
+
+// Adicione o serviço de seeding ao container de injeção de dependência
+
 
 // Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var seedingService = scope.ServiceProvider.GetRequiredService<SeedingService>();
+    seedingService.Seed();
 }
 
 app.UseHttpsRedirection();
