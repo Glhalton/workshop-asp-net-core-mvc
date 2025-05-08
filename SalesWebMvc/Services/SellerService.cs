@@ -19,5 +19,12 @@ namespace SalesWebMvc.Services
             //acessa o banco de dados na tabela Seller e traz todos as linhas em uma lista
             return _context.Seller.ToList();
         }
+
+        public void Insert(Seller seller)
+        {
+            seller.Department = _context.Department.First();
+            _context.Add(seller);
+            _context.SaveChanges();
+        }
     }
 }
